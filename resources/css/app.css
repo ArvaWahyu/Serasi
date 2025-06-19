@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Global Styles ===== */
+body {
+    @apply bg-gray-100 text-gray-800 antialiased;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* ===== Custom Components ===== */
+@layer components {
+    /* --- Sidebar --- */
+    .sidebar-link {
+        @apply block px-4 py-2 text-sm font-semibold rounded-lg text-warmbrown-dark hover:bg-warmyellow-light dark:text-white dark:hover:bg-warmbrown-light;
+    }
+
+    .sidebar-active {
+        @apply bg-warmyellow text-warmred dark:bg-warmbrown;
+    }
+
+    .logout-button {
+        @apply w-full text-left px-4 py-2 mt-2 text-sm font-semibold text-warmred hover:bg-warmyellow-light rounded-lg;
+    }
+
+    /* --- Form --- */
+    .form-card {
+        @apply bg-warmbrown-light p-6 rounded-lg shadow space-y-4;
+    }
+
+    .form-input,
+    .input {
+        @apply w-full border border-warmbrown px-3 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-warmred;
+    }
+
+    .form-select {
+        @apply w-full border border-warmbrown p-2 rounded focus:outline-none focus:ring-2 focus:ring-warmred;
+    }
+
+    .form-textarea {
+        @apply w-full border border-warmbrown p-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-warmred;
+    }
+
+    .label {
+        @apply text-sm font-medium text-warmbrown-dark;
+    }
+
+    /* --- Buttons --- */
+    .btn-primary {
+        @apply px-4 py-2 bg-warmred text-warmyellow rounded hover:bg-warmred-dark transition;
+    }
+
+    /* --- Alerts --- */
+    .alert-success {
+        @apply text-green-600 bg-green-100 border border-green-300 p-3 rounded mb-4 text-sm;
+    }
+
+    .alert-error {
+        @apply text-red-600 bg-red-100 p-3 rounded mb-4 text-sm;
+    }
+
+    /* --- Cards / Panels --- */
+    .card {
+        @apply bg-warmbrown-light p-6 rounded shadow;
+    }
+
+    /* --- Tables --- */
+    .table {
+        @apply w-full table-auto border-collapse text-sm;
+    }
+
+    .table-header,
+    .table th {
+        @apply bg-warmyellow text-warmbrown-dark font-semibold p-3 text-left;
+    }
+
+    .table-cell,
+    .table td {
+        @apply border-t border-warmbrown p-3;
+    }
+    
+     /* --- Pagination --- */
+    .pagination {
+        @apply flex justify-center space-x-1 mt-4;
+    }
+
+    .pagination .page-link {
+        @apply px-3 py-1 rounded border border-warmbrown bg-warmyellow text-warmbrown hover:bg-warmyellow-light transition;
+    }
+
+    .pagination .active .page-link {
+        @apply bg-warmred text-warmyellow border-warmred;
+    }
+
+    .pagination .disabled .page-link {
+        @apply bg-warmyellow-light text-warmbrown cursor-not-allowed;
+    }
+}

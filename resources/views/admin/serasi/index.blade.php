@@ -58,14 +58,27 @@
                     <td class="table-cell">{{ $item->kategori }}</td>
                     <td class="table-cell">{{ $item->deskripsi_laporan }}</td>
                     <td class="table-cell">
-                        <span class="inline-block px-2 py-1 text-xs rounded font-medium 
-        {{ $item->status == 'selesai' ? 'bg-green-200 text-green-800' : 
-           ($item->status == 'proses' ? 'bg-blue-200 text-blue-800' :
-           ($item->status == 'tolak' ? 'bg-red-200 text-red-800' : 'bg-yellow-100 text-yellow-800')) }}">
-                            {{ ucfirst($item->status) }}
-                        </span>
+                        <form action="{{ route('admin.serasi.update', $item->id) }}" method="POST" class="inline-block">
+                            @csrf
+                            @method('PUT')
+                            <select name="status" onchange="this.form.submit()" class="form-select text-sm rounded border-gray-300 focus:ring focus:ring-blue-200" style="min-width: 120px;">
+                                <option value="tinjau" {{ $item->status == 'tinjau' ? 'selected' : '' }}>Tinjau</option>
+                                <option value="proses" {{ $item->status == 'proses' ? 'selected' : '' }}>Proses</option>
+                                <option value="tolak" {{ $item->status == 'tolak' ? 'selected' : '' }}>Tolak</option>
+                                <option value="selesai" {{ $item->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                            </select>
+                            <input type="hidden" name="pesan_balasan" value="{{ $item->pesan_balasan }}">
+                        </form>
                     </td>
-                    <td class="table-cell">{{ $item->pesan_balasan }}</td>
+                <td class="table-cell">
+                    <form action="{{ route('admin.serasi.update', $item->id) }}" method="POST" class="flex items-center gap-2">
+                        @csrf
+                        @method('PUT')
+                        <textarea name="pesan_balasan" rows="1" class="border rounded p-1 text-sm resize-none w-full" style="min-width: 150px;">{{ $item->pesan_balasan }}</textarea>
+                        <input type="hidden" name="status" value="{{ $item->status }}">
+                        <button type="submit" class="btn-primary bg-green-600 hover:bg-green-700 px-3 py-1 text-sm">Balas</button>
+                    </form>
+                </td>
                     <td class="table-cell">
                         <div class="flex gap-2">
                             <a href="{{ route('admin.serasi.edit', $item->id) }}" class="text-blue-600 hover:underline">Edit</a>

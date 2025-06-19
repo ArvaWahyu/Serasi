@@ -43,30 +43,30 @@ class SerasiController extends Controller
     /**
      * Halaman depan: Simpan aspirasi dari publik
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'npm' => 'required|string|max:20',
-            'email' => 'required|email',
-            'telpon' => 'required|string|max:15',
-            'kategori' => 'required|in:akademik,non-akademik',
-            'deskripsi_laporan' => 'required|string',
-        ]);
+        public function store(Request $request)
+        {
+            $request->validate([
+                'nama' => 'required|string|max:255',
+                'npm' => ['required', 'string', 'max:20', 'regex:/^(1[6-9]|2[0-4])\\d*$/'],
+                'email' => 'required|email',
+                'telpon' => ['required', 'string', 'regex:/^08\\d{9,11}$/'],
+                'kategori' => 'required|in:akademik,non-akademik',
+                'deskripsi_laporan' => 'required|string',
+            ]);
 
-        Serasi::create([
-            'nama' => $request->nama,
-            'npm' => $request->npm,
-            'email' => $request->email,
-            'telpon' => $request->telpon,
-            'kategori' => $request->kategori,
-            'deskripsi_laporan' => $request->deskripsi_laporan,
-            'status' => 'tinjau',
-            'pesan_balasan' => null,
-        ]);
+            Serasi::create([
+                'nama' => $request->nama,
+                'npm' => $request->npm,
+                'email' => $request->email,
+                'telpon' => $request->telpon,
+                'kategori' => $request->kategori,
+                'deskripsi_laporan' => $request->deskripsi_laporan,
+                'status' => 'tinjau',
+                'pesan_balasan' => null,
+            ]);
 
-        return redirect()->back()->with('success', 'Aspirasi berhasil dikirim!');
-    }
+            return redirect()->back()->with('success', 'Aspirasi berhasil dikirim!');
+        }
 
     /**
      * Halaman admin: Tampilkan semua data
@@ -109,23 +109,23 @@ class SerasiController extends Controller
     /**
      * Halaman admin: Simpan data aspirasi baru
      */
-    public function storeAdmin(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'npm' => 'required|string|max:20',
-            'email' => 'required|email',
-            'telpon' => 'required|string|max:15',
-            'kategori' => 'required|in:akademik,non-akademik',
-            'deskripsi_laporan' => 'required|string',
-            'status' => 'required|in:tinjau,proses,tolak,selesai',
-            'pesan_balasan' => 'nullable|string',
-        ]);
+        public function storeAdmin(Request $request)
+        {
+            $request->validate([
+                'nama' => 'required|string|max:255',
+                'npm' => ['required', 'string', 'max:20', 'regex:/^(1[6-9]|2[0-4])\\d*$/'],
+                'email' => 'required|email',
+                'telpon' => ['required', 'string', 'regex:/^08\\d{9,11}$/'],
+                'kategori' => 'required|in:akademik,non-akademik',
+                'deskripsi_laporan' => 'required|string',
+                'status' => 'required|in:tinjau,proses,tolak,selesai',
+                'pesan_balasan' => 'nullable|string',
+            ]);
 
-        Serasi::create($request->all());
+            Serasi::create($request->all());
 
-        return redirect()->route('admin.serasi.index')->with('success', 'Data berhasil ditambahkan.');
-    }
+            return redirect()->route('admin.serasi.index')->with('success', 'Data berhasil ditambahkan.');
+        }
 
     /**
      * Halaman admin: Edit data aspirasi

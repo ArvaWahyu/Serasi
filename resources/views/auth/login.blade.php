@@ -1,8 +1,9 @@
-<x-guest-layout>
+<x-guest-layout title="Admin Login">
     {{-- Logo Bulat di Paling Atas --}}
     <div class="flex justify-center mt-6 mb-4">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTIADQ4zEmHUL4_h42vSeAIrILRi6VEcmLiA&s" alt="Logo Serasi" class="w-24 h-24 rounded-full shadow-md border-4 border-red-700">
     </div>
+    <h1 class="text-center text-2xl font-bold mb-6">Serap Aspirasi</h1>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

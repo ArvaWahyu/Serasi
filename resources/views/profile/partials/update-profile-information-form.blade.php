@@ -25,7 +25,7 @@
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="text" class="mt-1 block w-full" :value="old('email', $user->email)" pattern="^[a-zA-Z0-9._%+-]+@teknokrat\.ac\.id$" title="Masukkan email @teknokrat.ac.id" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
@@ -61,4 +61,44 @@
             @endif
         </div>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileForm = document.querySelector('form[action="{{ route('profile.update') }}"]');
+            const emailInputProfile = profileForm.querySelector('input[name="email"]');
+            profileForm.addEventListener('submit', function(event) {
+                const emailValue = emailInputProfile.value;
+                const domainPattern = /^[a-zA-Z0-9._%+-]+@teknokrat\.ac\.id$/;
+                if (!domainPattern.test(emailValue)) {
+                    event.preventDefault();
+                    emailInputProfile.setCustomValidity('Masukkan email @teknokrat.ac.id');
+                    emailInputProfile.reportValidity();
+                } else {
+                    emailInputProfile.setCustomValidity('');
+                }
+            });
+            emailInputProfile.addEventListener('invalid', function(event) {
+                const domainPattern = /^[a-zA-Z0-9._%+-]+@teknokrat\.ac\.id$/;
+                if (!event.target.value || !domainPattern.test(event.target.value)) {
+                    event.target.setCustomValidity('Masukkan email @teknokrat.ac.id');
+                } else {
+                    event.target.setCustomValidity('');
+                }
+            });
+            emailInputProfile.addEventListener('input', function(event) {
+                event.target.setCustomValidity('');
+            });
+
+            const nameInputProfile = profileForm.querySelector('input[name="name"]');
+            nameInputProfile.addEventListener('invalid', function(event) {
+                event.target.setCustomValidity('');
+                if (!event.target.validity.valid) {
+                    event.target.setCustomValidity('Masukkan nama yang benar');
+                }
+            });
+            nameInputProfile.addEventListener('input', function(event) {
+                event.target.setCustomValidity('');
+            });
+        });
+    </script>
 </section>

@@ -1,6 +1,6 @@
 <div class="fixed top-0 left-0 w-64 h-screen bg-white border-r dark:bg-gray-800 dark:border-gray-600 z-50">
     <div class="px-4 py-8">
-        <h2 class="text-3xl font-semibold text-center text-gray-800 dark:text-white">Admin</h2>
+        <h2 class="text-3xl font-semibold text-center text-gray-800 dark:text-white">Hello :)</h2>
     </div>
 
     <nav class="flex flex-col justify-between h-[calc(100%-6rem)] px-4 pb-8 overflow-hidden">

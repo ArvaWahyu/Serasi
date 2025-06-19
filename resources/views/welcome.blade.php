@@ -31,17 +31,78 @@
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <input type="text" name="nama" placeholder="Nama" class="form-input border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none" required />
-                    <input type="text" name="npm" placeholder="NPM" class="form-input border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none" required />
-                    <input type="email" name="email" placeholder="Email" class="form-input border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none" required />
-                    <input type="text" name="telpon" placeholder="Telpon" class="form-input border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none" required />
-                    <select name="kategori" class="form-select border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+            <input type="text" name="npm" placeholder="NPM" pattern="^(1[6-9]|2[0-4])\d*$" title="Masukkan NPM yang benar!" class="form-input border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none @error('npm') border-red-500 @enderror" value="{{ old('npm') }}" required oninvalid="this.setCustomValidity('Masukkan NPM')" oninput="this.setCustomValidity('')" />
+            @error('npm')
+            <p class="mt-1 text-sm text-red-600">Masukkan NPM yang benar!</p>
+            @enderror
+
+            <script>
+                const npmInput = document.querySelector('input[name="npm"]');
+                npmInput.addEventListener('invalid', function(event) {
+                    if (event.target.validity.patternMismatch) {
+                        event.target.setCustomValidity('Masukkan NPM yang benar!');
+                    } else if (event.target.validity.valueMissing) {
+                        event.target.setCustomValidity('Masukkan NPM');
+                    } else {
+                        event.target.setCustomValidity('');
+                    }
+                });
+                npmInput.addEventListener('input', function(event) {
+                    event.target.setCustomValidity('');
+                });
+
+                const nameInput = document.querySelector('input[name="nama"]');
+                nameInput.addEventListener('invalid', function(event) {
+                    event.target.setCustomValidity('');
+                    if (!event.target.validity.valid) {
+                        event.target.setCustomValidity('Masukkan nama yang benar');
+                    }
+                });
+                nameInput.addEventListener('input', function(event) {
+                    event.target.setCustomValidity('');
+                });
+            </script>
+                    <input type="email" name="email" placeholder="Email" class="form-input border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none @error('email') border-red-500 @enderror" value="{{ old('email') }}" required />
+                    @error('email')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const form = document.querySelector('form[action="{{ route('serasi.store') }}"]');
+                            const emailInput = form.querySelector('input[name="email"]');
+                            form.addEventListener('submit', function(event) {
+                                const emailValue = emailInput.value;
+                            if (!emailValue.includes('@teknokrat.ac.id')) {
+                                event.preventDefault();
+                                emailInput.setCustomValidity('Masukkan email @teknokrat.ac.id');
+                                emailInput.reportValidity();
+                            } else {
+                                emailInput.setCustomValidity('');
+                            }
+                        });
+                        emailInput.addEventListener('invalid', function(event) {
+                            const domainPattern = /^[a-zA-Z0-9._%+-]+@teknokrat\.ac\.id$/;
+                            if (!event.target.value || !domainPattern.test(event.target.value)) {
+                                event.target.setCustomValidity('Masukkan email @teknokrat.ac.id');
+                            } else {
+                                event.target.setCustomValidity('');
+                            }
+                        });
+                        emailInput.addEventListener('input', function(event) {
+                            event.target.setCustomValidity('');
+                        });
+                    });
+                    </script>
+                    <input type="text" name="telpon" placeholder="Telpon" pattern="^08\d{9,11}$" class="form-input border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none @error('telpon') border-red-500 @enderror" required oninvalid="this.setCustomValidity('Masukkan nomor telepon yang valid, mulai dengan 08 dan 11-13 digit')" oninput="this.setCustomValidity('')" value="{{ old('telpon') }}" />
+                    <select name="kategori" class="form-select border border-gray-300 rounded p-3 w-full focus:ring-2 focus:ring-red-500 focus:outline-none" required oninvalid="this.setCustomValidity('Pilih kategori!')" oninput="this.setCustomValidity('')">
                         <option value="">-- Pilih Kategori --</option>
                         <option value="akademik">Akademik</option>
                         <option value="non-akademik">Non-Akademik</option>
                     </select>
                 </div>
                 <div>
-                    <textarea name="deskripsi_laporan" rows="4" placeholder="Deskripsi Laporan" class="form-textarea w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-red-500 focus:outline-none" required></textarea>
+                    <textarea name="deskripsi_laporan" rows="4" placeholder="Deskripsi Laporan" class="form-textarea w-full border border-gray-300 rounded p-3 focus:ring-2 focus:ring-red-500 focus:outline-none" required oninvalid="this.setCustomValidity('Harap masukkan laporan Anda.')" oninput="this.setCustomValidity('')"></textarea>
                 </div>
                 <div class="text-center">
                     <button type="submit" class="mt-4 px-8 py-3 bg-red-700 text-white font-semibold rounded hover:bg-red-600 transition">
@@ -49,12 +110,28 @@
                     </button>
                 </div>
             </form>
+
+            <script>
+                const telponInput = document.querySelector('input[name="telpon"]');
+                telponInput.addEventListener('invalid', function(event) {
+                    if (event.target.validity.patternMismatch) {
+                        event.target.setCustomValidity('Masukkan nomor telepon yang valid');
+                    } else if (event.target.validity.valueMissing) {
+                        event.target.setCustomValidity('Masukkan nomor telepon');
+                    } else {
+                        event.target.setCustomValidity('');
+                    }
+                });
+                telponInput.addEventListener('input', function(event) {
+                    event.target.setCustomValidity('');
+                });
+            </script>
         </section>
 
         <section class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-8">
             <h2 class="text-2xl font-semibold mb-6 text-gray-800">Daftar Aspirasi</h2>
             <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <input type="text" name="search" placeholder="Cari nama, NPM, email" value="{{ request('search') }}" class="p-3 border border-gray-300 rounded w-full focus:ring-2 focus:ring-red-500 focus:outline-none" />
+                <input type="text" name="search" placeholder="Cari nama, NPM" value="{{ request('search') }}" class="p-3 border border-gray-300 rounded w-full focus:ring-2 focus:ring-red-500 focus:outline-none" />
                 <select name="kategori" class="p-3 border border-gray-300 rounded w-full focus:ring-2 focus:ring-red-500 focus:outline-none">
                     <option value="">Semua Kategori</option>
                     <option value="akademik" {{ request('kategori') == 'akademik' ? 'selected' : '' }}>Akademik</option>
@@ -81,8 +158,6 @@
                         <tr>
                             <th class="px-4 py-2 text-left font-medium">Nama</th>
                             <th class="px-4 py-2 text-left font-medium">NPM</th>
-                            <th class="px-4 py-2 text-left font-medium">Email</th>
-                            <th class="px-4 py-2 text-left font-medium">Telpon</th>
                             <th class="px-4 py-2 text-left font-medium">Kategori</th>
                             <th class="px-4 py-2 text-left font-medium">Deskripsi</th>
                             <th class="px-4 py-2 text-left font-medium">Status</th>
@@ -95,8 +170,6 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-2">{{ $serasi->nama }}</td>
                             <td class="px-4 py-2">{{ $serasi->npm }}</td>
-                            <td class="px-4 py-2">{{ $serasi->email }}</td>
-                            <td class="px-4 py-2">{{ $serasi->telpon }}</td>
                             <td class="px-4 py-2">{{ ucfirst($serasi->kategori) }}</td>
                             <td class="px-4 py-2">{{ $serasi->deskripsi_laporan }}</td>
                             <td class="px-4 py-2">

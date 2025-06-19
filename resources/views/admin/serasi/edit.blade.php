@@ -43,7 +43,7 @@
             </div>
             <div class="md:col-span-2">
                 <label class="block text-sm font-medium mb-1">Deskripsi Laporan</label>
-                <textarea name="deskripsi_laporan" rows="4" class="form-input resize-none" required>{{ $serasi->deskripsi_laporan }}</textarea>
+                <textarea name="deskripsi_laporan" rows="4" class="form-input resize-none" required oninvalid="this.setCustomValidity('Harap masukkan laporan Anda.')" oninput="this.setCustomValidity('')">{{ $serasi->deskripsi_laporan }}</textarea>
             </div>
             <div class="md:col-span-2">
                 <label class="block text-sm font-medium mb-1">Pesan Balasan</label>
